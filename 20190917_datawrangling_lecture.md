@@ -31,4 +31,26 @@ litters_data <- read_csv(file = "./data_import_examples/FAS_litters.csv")
 #reform variable names in dataset if necessary:
 
 litters_data <- janitor::clean_names(litters_data)
+
+#use :: if did not previously load library earlier in code. Often use janitor::clean_names() because not using that library for anything else, and if attach that package can have name conflicts.
+```
+
+## Load in pups dataset:
+
+``` r
+pups_data <- read_csv("./data_import_examples/FAS_pups.csv")
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   `Litter Number` = col_character(),
+    ##   Sex = col_double(),
+    ##   `PD ears` = col_double(),
+    ##   `PD eyes` = col_double(),
+    ##   `PD pivot` = col_double(),
+    ##   `PD walk` = col_double()
+    ## )
+
+``` r
+pups_data <- janitor::clean_names(pups_data)
 ```

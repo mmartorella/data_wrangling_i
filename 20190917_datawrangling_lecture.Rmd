@@ -17,6 +17,7 @@ library(tidyverse)
 ## Load in a dataset
 
 ```{r}
+
 ##reads in a dataset
 
 ##absolute paths do not always match, use of relative paths gives path from common starting point. Always use relative path, never absolute path (this allows you to send R project folder to someone, and they can do the same analysis).
@@ -29,7 +30,19 @@ litters_data <- read_csv(file = "./data_import_examples/FAS_litters.csv")
 
 litters_data <- janitor::clean_names(litters_data)
 
+#use :: if did not previously load library earlier in code. Often use janitor::clean_names() because not using that library for anything else, and if attach that package can have name conflicts.
 
 ```
+
+## Load in pups dataset:
+
+```{r}
+
+pups_data <- read_csv("./data_import_examples/FAS_pups.csv")
+
+pups_data <- janitor::clean_names(pups_data)
+
+```
+
 
 
