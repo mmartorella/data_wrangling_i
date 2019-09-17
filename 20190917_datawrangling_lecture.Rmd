@@ -10,6 +10,7 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(readxl)
 
 ```
 
@@ -24,7 +25,7 @@ library(tidyverse)
 
 litters_data <- read_csv(file = "./data_import_examples/FAS_litters.csv")
 
-#first step shjould be to print or look at head/tail of data.
+#first step should be to print or view data.
 
 #reform variable names in dataset if necessary:
 
@@ -42,7 +43,26 @@ pups_data <- read_csv("./data_import_examples/FAS_pups.csv")
 
 pups_data <- janitor::clean_names(pups_data)
 
+#gives summary of variable types, histogram of values, etc.
+skimr::skim(pups_data)
+
 ```
 
+
+## Read in an excel file:
+
+```{r}
+
+mlb_data <- read_excel(path = "./data_import_examples/mlb11.xlsx")
+
+```
+
+## Read in SAS:
+
+```{r}
+
+pulse_data <- haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat")
+
+```
 
 
