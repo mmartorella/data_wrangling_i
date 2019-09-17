@@ -78,6 +78,12 @@ skimr::skim(pups_data)
 
 ``` r
 mlb_data <- read_excel(path = "./data_import_examples/mlb11.xlsx")
+
+# exporting data:
+
+write_csv(mlb_data, path = "./data_import_examples/mlb_export.csv")
+
+#it will write this file every time you knit!!
 ```
 
 ## Read in SAS:
