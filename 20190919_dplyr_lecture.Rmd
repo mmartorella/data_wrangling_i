@@ -64,5 +64,43 @@ rename(litters_data, GROUP = group)
 
 ```
 
+## Filter observations from the datasets:
 
+```{r}
+
+filter(litters_data, group == "Con7")
+
+filter(litters_data, group == "Mod8")
+
+filter(litters_data, gd_of_birth == 20)
+
+filter(litters_data, gd_of_birth < 20)
+
+filter(litters_data, gd_of_birth >= 20)
+
+filter(litters_data, pups_born_alive < 6, group == "Con7")
+
+#to filter multiple observations of the same variable.
+filter(litters_data, group %in% c("Con7", "Mod8"))
+
+filter(litters_data, group == "Con7" | group == "Mod8")
+
+filter(litters_data, pups_born_alive >= 4, pups_born_alive <= 6)
+
+filter(litters_data, gd0_weight + gd18_weight < 70)
+
+filter(litters_data, gd0_weight < gd18_weight)
+
+#missing values -- DON'T DO THIS:
+filter(litters_data, !is.na(gd0_weight))
+
+#DO THIS FOR NA VALUES:
+
+drop_na(litters_data, gd0_weight)
+
+#can specify variable to drop NAs from, or specify no variable and it will drop all NAs from all columns.
+
+drop_na(litters_data)
+
+```
 
