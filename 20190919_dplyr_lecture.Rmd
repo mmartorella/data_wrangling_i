@@ -28,5 +28,41 @@ pups_data <- janitor::clean_names(pups_data)
 
 ```
 
+## Selecting variables (columns) from the datasets:
+
+```{r}
+
+select(litters_data, litter_number)
+
+select(litters_data, group, litter_number, gd0_weight)
+
+select(litters_data, litter_number, gd0_weight, starts_with("pups"))
+
+select(litters_data, litter_number, group, gd0_weight)
+
+#gives columns back in order specified.
+
+select(litters_data, litter_number, group, everything())
+
+#selects litter number first, then group, and keeps everything else (just specifying order of litter_number then group before everything else).
+
+select(litters_data, -group)
+
+#removes the group column/variable
+
+select(litters_data, litter_number, gd0_weight:pups_born_alive)
+
+#keep litter number and then all columns from gd0weight to pups born alive and removes all other columns.
+
+select(litters_data, GROUP = group, litter_number)
+
+#select group and litter_number variables, but rename the group variable to GROUP at the same time. Can also just rename using rename function:
+
+rename(litters_data, GROUP = group)
+
+#renames, but does not select columns.
+
+```
+
 
 
