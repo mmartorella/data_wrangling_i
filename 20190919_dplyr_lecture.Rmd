@@ -104,3 +104,81 @@ drop_na(litters_data)
 
 ```
 
+## Mutate - edit variables inside a dataset
+
+```{r}
+
+mutate(litters_data, 
+       wt_gain = gd18_weight - gd0_weight)
+
+#adds new column.
+
+mutate(litters_data, 
+       wt_gain = gd18_weight - gd0_weight,
+       group = tolower(group))
+#now have new column and have changed group variable names to all lower case.
+
+mutate(litters_data, 
+       wt_gain = gd18_weight - gd0_weight,
+       group = str_to_lower(group),
+       group = str_to_upper(group))
+
+#can change the same variable within the same mutate. Executes the edits in the order you enter them in the function.
+
+```
+
+## Arranging - data into new order, mostly done just for viewing or double checking the data:
+
+```{r}
+
+arrange(litters_data, pups_born_alive)
+
+#orders pups born alive by ascending by default.
+
+arrange(litters_data, desc(pups_born_alive))
+
+#specify order by descending instead.
+
+arrange(litters_data, pups_born_alive, gd0_weight)
+
+```
+
+## pipe ...
+
+```{r}
+
+#if have situation when doing series of things on a dataframe and outputting a dataframe, can usually pipe.
+
+litters_data <- 
+  read_csv("./data_import_examples/FAS_litters.csv") %>% 
+  janitor::clean_names() %>% 
+  select(-pups_survive) %>% 
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group)) %>% 
+  drop_na(gd0_weight)
+
+#implicitly a pipe is saying, the result of the last thing is passed into the first argument of the next thing. Can specify though:
+
+litters_data <- 
+  read_csv("./data_import_examples/FAS_litters.csv") %>% 
+  janitor::clean_names(dat = .) %>% 
+  select(.dat = ., -pups_survive) %>% 
+  lm(gd0_weight ~ gd18_weight, data = .)
+
+#for lm, the first argument is not a dataframe, but can specify it later on, with a period referencing the prior pipe result.
+
+```
+
+```{r, eval = FALSE}
+
+litters_data %>% view()
+
+litters_data %>% pull(gd0_weight) %>% mean()
+
+```
+
+
+
+
+
