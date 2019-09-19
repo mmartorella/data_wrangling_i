@@ -5,3 +5,28 @@ date: "9/19/2019"
 output: github_document
 ---
 
+```{r setup, include = FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(readxl)
+
+```
+
+## Import datasets:
+
+```{r}
+
+litters_data <- read_csv("./data_import_examples/FAS_litters.csv")
+
+litters_data <- janitor::clean_names(litters_data)
+
+pups_data <- read_csv("./data_import_examples/FAS_pups.csv")
+
+pups_data <- janitor::clean_names(pups_data)
+
+```
+
+
+
