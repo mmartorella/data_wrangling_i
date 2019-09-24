@@ -1,0 +1,167 @@
+---
+title: "Tidy Data"
+author: "Molly Martorella"
+date: "9/24/2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+library(tidyverse)
+
+options(tibble.print_min = 5)
+
+```
+
+
+```{r}
+
+pulse_data <- 
+  haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names()
+  
+
+pulse_data
+
+```
+
+
+```{r}
+
+pulse_tidy_data <- 
+  pivot_longer(
+    pulse_data, 
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    values_to = "bdi")
+
+pulse_tidy_data
+
+```
+
+
+```{r}
+
+pulse_tidy_data <- 
+  pivot_longer(
+    pulse_data, 
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix = "bdi_score_",
+    values_to = "bdi")
+
+pulse_tidy_data
+
+```
+
+```{r}
+
+#can pipe altogether as:
+
+pulse_data <- 
+  haven::read_sas("./data_import_examples/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names() %>% 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix = "bdi_score_",
+    values_to = "bdi")
+
+
+```
+
+```{r}
+
+read_csv("./data_import_examples/FAS_litters.csv", col_types = "ccddiiii") %>% 
+  janitor::clean_names() %>%
+  count(group)
+
+litters_data = 
+  read_csv("./data_import_examples/FAS_litters.csv", col_types = "ccddiiii") %>% 
+  janitor::clean_names() %>%
+  separate(group, into = c("dose", "day_of_tx"), sep = 3) %>%
+  mutate(
+    dose = str_to_lower(dose),
+    wt_gain = gd18_weight - gd0_weight)
+
+litters_data
+
+```
+
+
+```{r}
+
+analysis_result <- tibble(
+  group = c("treatment", "treatment", "placebo", "placebo"),
+  time = c("pre", "post", "pre", "post"),
+  mean = c(4, 8, 3.5, 4)
+)
+
+analysis_result
+
+pivot_wider(
+  analysis_result, 
+  names_from = "time", 
+  values_from = "mean")
+
+```
+
+
+```{r}
+
+fellowship_ring = 
+  readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "B3:D6") %>%
+  mutate(movie = "fellowship_ring")
+
+two_towers = 
+  readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "F3:H6") %>%
+  mutate(movie = "two_towers")
+
+return_king = 
+  readxl::read_excel("./data_import_examples/LotR_Words.xlsx", range = "J3:L6") %>%
+  mutate(movie = "return_king")
+
+```
+
+
+```{r}
+
+lotr_tidy = 
+  bind_rows(fellowship_ring, two_towers, return_king) %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    female:male,
+    names_to = "sex", 
+    values_to = "words") %>%
+  mutate(race = str_to_lower(race)) %>%
+  select(movie, everything())
+
+lotr_tidy
+
+```
+
+
+```{r}
+
+pup_data <- 
+  read_csv("./data_import_examples/FAS_pups.csv", col_types = "ciiiii") %>%
+  janitor::clean_names() %>%
+  mutate(sex = recode(sex, `1` = "male", `2` = "female"))
+
+litter_data <- 
+  read_csv("./data_import_examples/FAS_litters.csv", col_types = "ccddiiii") %>%
+  janitor::clean_names() %>%
+  select(-pups_survive) %>%
+  mutate(
+    wt_gain = gd18_weight - gd0_weight,
+    group = str_to_lower(group))
+
+fas_data <- 
+  left_join(pup_data, litter_data, by = "litter_number")
+fas_data
+
+```
